@@ -1,5 +1,6 @@
 from files import *
-
+from network import Network
+import time
 
 def main():
 
@@ -29,29 +30,38 @@ def main():
 
     pass
 
-def manual_main():
+def manual_extract():
     
-    url = ""
+    url = "https://webnovelfull.net/read-novel/shadow-slave/chapter-%s"
+    output_name = "shadow_slave"
+    chapter_number = 1
+    stop_at = 50
+    save_data = True
 
-    Network.last_instance = Network.instance(url)
+    if save_data:
+        File_Writer.create_directory(output_name)
 
-    while Network.unstopped is True:
+    while Network.run is True and chapter_number <= stop_at:
+        curr_url = ''.join(url) % chapter_number
 
-        url = Network.get_next_url(url)
+        print("Current URL: %s" % curr_url)
 
-        File_Writer.write_file(Network.last_instance.data)    
+        html = Network.perform_request(curr_url)
+        
     
-    
-    File_Writer.mass_tokenize(batches=-1, optimal_size=4096)
+        if html:
+            data = Network.parse_html(html)        
+            text = Network.extract_text_div(data)
 
-    for batch in File_Writer.tokenized_batches:
+            if save_data is True:
+                File_Writer.write_text_file(text, output_name, chapter_number)
+            
+            print(f"Completed: {curr_url}")
+            chapter_number += 1
 
-        print(batch.shape)
-
-        # Pause until user enters any input
-        input("")
-
-
+def manual_output():
+    pass
 
 if __name__ == '__main__':
-    manual_main()
+    # manual_extract()
+    manual_output()

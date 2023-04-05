@@ -1,28 +1,13 @@
-import requests
-import beautifulsoup4
+import os
 
 class File_Writer:
     @staticmethod
-    def write_file(file_name, data):
-        pass
-
-class Page:
-    def __init__(self, request_response):
-
-        pass
-
-class Network:
-    instances = []
-    unstopped = True
-    last_instance = None
+    def write_text_file(text, dir, number):
+        
+        with open(f"{dir}/{dir}_{number}.txt", "w") as f:
+            f.writelines(text)
 
     @staticmethod
-    def instance(url):
-
-        # Try to get html data
-
-        # If Page object indicates failure mark unstopped
-        
-        # Else if Page object indicates success, create new instance
-
-        
+    def create_directory(folder_name):
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
