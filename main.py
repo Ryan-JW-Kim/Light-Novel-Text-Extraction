@@ -1,3 +1,4 @@
+import sys
 from files import *
 from network import Network
 from chatgpt import count_tokens
@@ -79,28 +80,58 @@ def manual_extract():
 
 def manual_output():
 
-    t = write_token_legend("shadow_slave")
-    for key in t:
-        print(f"{key}: {t[key]}")
+    context_window = 32000
+    token_map = write_token_legend("shadow_slave")
 
-    # For each file
-    # for file in os.listdir("shadow_slave"):
-    #     if file.endswith(".txt"):
-            
-    #         # Generate response for describing the target individual
-    #         print(file)
-    #         with open("shadow_slave/" + file, "r") as f:
-    #             text = f.read()
-    #             print(count_tokens(text))
-                
+    # -----------------------------------
+    # ---- Manage Token Optimization ----
+    # -----------------------------------
 
-            # Save list of descriptions into file.
+        # -----------------------------------
+        # -- Generate token map for files ---
+        # -----------------------------------
+
+        # -----------------------------------
+        # -- Create ranges for easy access --
+        # -----------------------------------
+
+    # -----------------------------------
+    # ---- Manage Displaying Output ----
+    # -----------------------------------
+
+        # -----------------------------------
+        # -------- For each Range -----------
+        # -----------------------------------
+
+            # -----------------------------------
+            # -For each chapter as per token map-
+            # -----------------------------------
 
 
+                # -----------------------------------
+                # ----- Add to context window -------
+                # -----------------------------------
 
-        # Generate response for describing the target individual
 
-        # Save list of descriptions into file.
+        # -----------------------------------
+        # ----Create per chapter prompt -----
+        # -----------------------------------
+
+
+        # -----------------------------------
+        # ---Deliver prompt to fine tuned ---
+        # -----------------------------------
+
+
+        # -----------------------------------
+        # ------ Process response into ------
+        # ------ descriptive parcel ---------
+        # -----------------------------------
+
+
+        # -----------------------------------                    fine tuned 2 is a specific model for taking descriptive parcels from
+        # --Feed parcel into fine tuned 2---                     fine tuned and generating a prompt for image ai
+        # -----------------------------------
 
 
 if __name__ == '__main__':
