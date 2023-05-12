@@ -1,6 +1,6 @@
 import sys
 from files import *
-from network import Network
+from network import Network, SiteSpecificScraper
 from chatgpt import count_tokens
 import time
 
@@ -136,4 +136,5 @@ def manual_output():
 
 if __name__ == '__main__':
     # manual_extract()
-    manual_output()
+    # manual_output()
+    SiteSpecificScraper()
