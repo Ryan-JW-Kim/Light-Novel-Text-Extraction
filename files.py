@@ -1,6 +1,7 @@
 import os
 import json
 from chatgpt import count_tokens    
+from bs4 import BeautifulSoup
 
 class File_Writer:
     @staticmethod
@@ -15,6 +16,21 @@ class File_Writer:
                 except UnicodeEncodeError:
                     f.write("")
                     print(f"UnicodeEncodeError: {line}")
+
+    @staticmethod
+    def parse_chapter_webpage(requests_result):
+        soup = BeautifulSoup(requests_result.text, "html.parser")
+        table = soup.find("div", {"id": "chr-content"})
+        divs = table.findAll("p")
+
+        text_lines = []
+        for elem in divs:
+            for row in elem:
+                row = row.decode()[3:-4]
+                text_lines.append(row)
+    
+        return text_lines
+
 
 def write_token_legend(target_folder: str, output_to_file=False):
 
