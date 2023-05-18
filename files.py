@@ -16,11 +16,6 @@ class File_Writer:
                     f.write("")
                     print(f"UnicodeEncodeError: {line}")
 
-    @staticmethod
-    def create_directory(folder_name):
-        if not os.path.exists(folder_name):
-            os.makedirs(folder_name)
-
 def write_token_legend(target_folder: str, output_to_file=False):
 
     tokens_data =  {}
