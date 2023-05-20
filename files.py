@@ -5,17 +5,11 @@ from bs4 import BeautifulSoup
 
 class File_Writer:
     @staticmethod
-    def write_text_file(text, dir, number):
+    def write_text_file(text, file_name, dir):
         
-        with open(f"{dir}/{dir}_{number}.txt", "w") as f:
+        with open(f"{dir}/{file_name}.txt", "w", encoding="UTF-8") as f:
             for line in text:
-
-                try:
-                    f.write(line)
-
-                except UnicodeEncodeError:
-                    f.write("")
-                    print(f"UnicodeEncodeError: {line}")
+                f.write(line + "\n")
 
     @staticmethod
     def parse_chapter_webpage(requests_result):
@@ -26,11 +20,15 @@ class File_Writer:
         text_lines = []
         for elem in divs:
             for row in elem:
-                row = row.decode()[3:-4]
-                text_lines.append(row)
+
+                try:
+                    _ = row.display
+                    text_lines.append(row.text)
+                
+                except:
+                    break
     
         return text_lines
-
 
 def write_token_legend(target_folder: str, output_to_file=False):
 
