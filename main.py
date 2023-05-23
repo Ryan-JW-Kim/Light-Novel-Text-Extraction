@@ -50,6 +50,8 @@ def testing_new():
             print(f"    Failed to download: {url} with error: {e}")
             passed.append(url)
     
+    print(f"Completed: {len(completed)}")
+    print(f"Failed: {len(passed)}")
 
 if __name__ == '__main__':
     

@@ -1,3 +1,4 @@
+import mechanize
 import requests
 from bs4 import BeautifulSoup
     
@@ -10,16 +11,17 @@ class SiteSpecificScraper:
         url: https://read-novelfull.com/readnovelfull/reincarnation-of-the-strongest-sword-god#tab-chapters-title
 
         In which the novel information for the title "Reincarnation Of The Strongest Sword God" is stored
+
         """
 
-        # self.url = "https://read-novelfull.com/readnovelfull/reincarnation-of-the-strongest-sword-god#tab-chapters-title"
-        self.test_file = "downloaded_test_page.html"
+        self.url = "https://read-novelfull.com/readnovelfull/reincarnation-of-the-strongest-sword-god#tab-chapters-title"
+        br = mechanize.Browser()
+        br.set_handle_robots(False)
+        br.set_handle_equiv(False)
+        br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+        resp = br.open(self.url)
 
-        # self.html = requests.get(self.url)
-        with open(self.test_file, "r", encoding="UTF-8") as f:
-            content = f.read()
-            
-            self.soup = BeautifulSoup(content, 'html.parser')
+        self.soup = BeautifulSoup(resp.read(), "html.parser")
 
         panel = self.soup.find("div", {"class": "panel-body"})
         rows = panel.findAll("li")
@@ -35,6 +37,3 @@ class SiteSpecificScraper:
                         segment = segment.replace("\"", "")
                     
                     self.urls.append(segment)
-    
-    def divide_batches(proxies, batch_size=10):
-        pass
