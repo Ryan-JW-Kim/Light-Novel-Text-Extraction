@@ -1,34 +1,47 @@
 import cloudscraper
 from datetime import datetime
-import threading
-from files import *
-from network import SiteSpecificScraper
+from tools import *
+import os
 import sys
 import time
-import requests
 
+# Import the proxy module from https://github.com/Ryan-JW-Kim/Python-Proxy
 sys.path.insert(0, "../Python-Proxy")
 from proxy import FreeProxyList, ProxyTools
 
-def testing_new():
+def Download_Book(user_input=None):
 
+    # Download a list of free proxies from proxy module
     proxy_list = FreeProxyList().proxies_data
-    book_webdata = SiteSpecificScraper()    
 
+    # Scrape list of chapter from https://read-novelfull.com/
+    if user_input is None:
+        book_webdata = SiteSpecificScraper()    
+
+    else:
+        try:
+            book_webdata = SiteSpecificScraper(user_input)
+
+        except Exception as e:
+            print(f"Failed to collect with error: {e}\n\t- Using url {user_input}")
+            return
+
+    # Make a folder with the current date and time
     folder_name = f"downloaded_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
     os.mkdir(folder_name)
 
+    # Create a cloudscraper object to bypass cloudflare
     scraper = cloudscraper.create_scraper(delay=5, browser="chrome")
 
     completed = []
     passed = []
 
     proxy_index = 0
-    max_index = len(proxy_list) - 1
+    max_proxy_index = len(proxy_list) - 1
     
     for url in book_webdata.urls:
-
-        if proxy_index > max_index:
+        
+        if proxy_index > max_proxy_index:
             proxy_index = 0
             
         proxy = proxy_list[proxy_index]
@@ -36,13 +49,14 @@ def testing_new():
 
         print(f"\nTrying proxy: {proxy['IP Address']}:{proxy['Port']}")
 
-        time.sleep(1) # This prevents the website from crashing....
+        # Wait 1 second, as to not spam the website with requests (unless website is sufficently fast, and you dont mind Ddos-ing it)
+        time.sleep(1) 
 
         try:
             response = scraper.get(url, proxies=ProxyTools.format_proxy(proxy))
-            text = File_Writer.parse_chapter_webpage(response)
+            text = parse_chapter_webpage(response)
             file_name = url.split("/")[-1]
-            File_Writer.write_text_file(text, file_name, folder_name)
+            write_text_file(text, file_name, folder_name)
             print(f"    Downloaded: {url}")
             completed.append(url)
             
@@ -55,4 +69,12 @@ def testing_new():
 
 if __name__ == '__main__':
     
-    testing_new()
+    user_inpt = input("Enter url: ")
+
+    if user_inpt == "":
+        Download_Book()
+    elif "https://read-novelfull.com/" in user_inpt:
+        Download_Book(user_inpt)
+
+    else:
+        print("Invalid url")
