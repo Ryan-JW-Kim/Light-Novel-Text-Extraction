@@ -20,15 +20,16 @@ def parse_chapter_webpage(requests_result):
     soup = BeautifulSoup(requests_result.text, "html.parser")
     table = soup.find("div", {"id": "chr-content"})
     divs = table.findAll("p")
-
     text_lines = []
     for elem in divs:
         for row in elem:
             try:
                 _ = row.display
-                text_lines.append(row.text)
             except:
-                break
+                text = row.text.strip()
+                if text != "":
+                    text_lines.append(row.text)
+
 
     return text_lines
 

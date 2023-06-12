@@ -50,7 +50,7 @@ def Download_Book(user_input=None):
         print(f"\nTrying proxy: {proxy['IP Address']}:{proxy['Port']}")
 
         # Wait 1 second, as to not spam the website with requests (unless website is sufficently fast, and you dont mind Ddos-ing it)
-        time.sleep(1) 
+        time.sleep(3) 
 
         try:
             response = scraper.get(url, proxies=ProxyTools.format_proxy(proxy))
